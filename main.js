@@ -25,7 +25,17 @@ function createWindow() {
     ? 'http://localhost:3000' 
     : `file://${path.join(__dirname, '../build/index.html')}`;
   
-  mainWindow.loadURL(startUrl);
+  // Lade die App mit Retry-Logik
+  const loadApp = () => {
+    mainWindow.loadURL(startUrl).catch((error) => {
+      console.log('Failed to load app, retrying in 2 seconds...', error.message);
+      if (isDev) {
+        setTimeout(loadApp, 2000);
+      }
+    });
+  };
+  
+  loadApp();
 
   // Zeige das Fenster wenn es bereit ist
   mainWindow.once('ready-to-show', () => {

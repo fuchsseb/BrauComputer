@@ -5,8 +5,9 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dev": "concurrently \"npm run dev:react\" \"wait-on http://localhost:3000 && electron .\"",
-    "dev:react": "react-scripts start",
+    "dev": "./start-dev.sh",
+    "dev:react": "BROWSER=none react-scripts start",
+    "dev:electron": "wait-on http://localhost:3000 && electron .",
     "build": "react-scripts build",
     "build:electron": "electron-builder",
     "dist": "npm run build && electron-builder",

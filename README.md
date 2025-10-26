@@ -50,21 +50,22 @@ Eine moderne Brausoftware für macOS mit umfassenden Funktionen für das profess
 ### Setup
 ```bash
 # Repository klonen
-git clone <repository-url>
+git clone https://github.com/fuchsseb/BrauComputer.git
 cd BrauComputer
 
 # Dependencies installieren
 npm install
 
+# App starten (Production - empfohlen)
+npm run build
+npm start
+
 # Entwicklung starten
 npm run dev
-
-# App bauen
-npm run build
-
-# Electron App erstellen
-npm run dist
 ```
+
+### GitHub Repository
+Das Projekt ist verfügbar unter: https://github.com/fuchsseb/BrauComputer
 
 ## Technologie-Stack
 
@@ -78,8 +79,8 @@ npm run dist
 
 ### Verfügbare Scripts
 
-- `npm start` - Startet die Electron App
-- `npm run dev` - Startet React Dev Server + Electron
+- `npm start` - Startet die Electron App (Production)
+- `npm run dev` - Startet React Dev Server + Electron (Development)
 - `npm run build` - Baut die React App
 - `npm run dist` - Erstellt eine verteilbare macOS App
 
@@ -92,6 +93,27 @@ src/
 ├── types/              # TypeScript Typdefinitionen
 └── App.tsx             # Hauptkomponente
 ```
+
+### Troubleshooting
+
+**App startet nicht:**
+```bash
+# Port 3000 freigeben
+lsof -ti:3000 | xargs kill -9
+
+# Dependencies neu installieren
+rm -rf node_modules package-lock.json
+npm install
+
+# Production Version verwenden
+npm run build
+npm start
+```
+
+**Development Probleme:**
+- React Dev Server braucht Zeit zum Starten
+- Electron wartet automatisch auf React
+- Bei Problemen: Production Version verwenden (`npm run build && npm start`)
 
 ## Features im Detail
 

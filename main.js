@@ -25,17 +25,25 @@ function createWindow() {
     ? 'http://localhost:3000' 
     : `file://${path.join(__dirname, '../build/index.html')}`;
   
-  // Lade die App mit Retry-Logik
-  const loadApp = () => {
-    mainWindow.loadURL(startUrl).catch((error) => {
-      console.log('Failed to load app, retrying in 2 seconds...', error.message);
-      if (isDev) {
-        setTimeout(loadApp, 2000);
-      }
-    });
-  };
-  
-  loadApp();
+  // Lade die App
+  if (isDev) {
+    // In Development: Warte auf React Dev Server
+    const checkServer = () => {
+      fetch('http://localhost:3000')
+        .then(() => {
+          console.log('✅ React Dev Server is ready, loading app...');
+          mainWindow.loadURL(startUrl);
+        })
+        .catch(() => {
+          console.log('⏳ React Dev Server not ready, retrying in 3 seconds...');
+          setTimeout(checkServer, 3000);
+        });
+    };
+    checkServer();
+  } else {
+    // In Production: Lade direkt
+    mainWindow.loadURL(startUrl);
+  }
 
   // Zeige das Fenster wenn es bereit ist
   mainWindow.once('ready-to-show', () => {
